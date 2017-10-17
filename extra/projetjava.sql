@@ -1,0 +1,11 @@
+CREATE TABLE `donnees` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`temperature` FLOAT NULL DEFAULT NULL,
+	`humidity` FLOAT NULL DEFAULT NULL,
+	`time` DATETIME NULL,
+	INDEX `id` (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=98
+;
