@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
    <children>
       <Pane layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="602.0" />
    </children>
@@ -27,15 +27,15 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="343.0" prefWidth="235.0">
                      <children>
-                        <Button layoutX="139.0" layoutY="243.0" mnemonicParsing="false" onAction="#start" prefHeight="25.0" prefWidth="70.0" text="Valider" />
-                        <TextField fx:id="TextFieldTemp" editable="false" layoutX="139.0" layoutY="73.0" prefHeight="25.0" prefWidth="70.0" />
-                        <TextField fx:id="TextFieldHumidity" editable="false" layoutX="471.0" layoutY="73.0" prefHeight="25.0" prefWidth="70.0" />
+                        <Button layoutX="155.0" layoutY="237.0" mnemonicParsing="false" onAction="#start" prefHeight="25.0" prefWidth="70.0" text="Valider" />
+                        <TextField fx:id="TextFieldTemp" editable="false" layoutX="155.0" layoutY="72.0" prefHeight="25.0" prefWidth="70.0" />
+                        <TextField fx:id="TextFieldHumidity" editable="false" layoutX="479.0" layoutY="72.0" prefHeight="25.0" prefWidth="70.0" />
                         <Label fx:id="LabelTemp" layoutX="14.0" layoutY="77.0" text="Température (°C)" />
                         <Button layoutX="372.0" layoutY="268.0" mnemonicParsing="false" onAction="#leave" text="shutdawn" visible="false" />
                         <Label fx:id="LabelHumidity" layoutX="385.0" layoutY="77.0" text="Humidité (%)" />
-                        <TextField fx:id="TextFieldDefine" layoutX="139.0" layoutY="195.0" prefHeight="25.0" prefWidth="70.0" />
+                        <TextField fx:id="TextFieldDefine" layoutX="155.0" layoutY="194.0" prefHeight="25.0" prefWidth="70.0" />
                         <Label fx:id="LabelDefine" layoutX="14.0" layoutY="199.0" text="Définir température" />
-                        <Circle fill="#8d8d8d" layoutX="491.0" layoutY="208.0" radius="36.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Circle fill="#8d8d8d" layoutX="506.0" layoutY="210.0" radius="36.0" stroke="WHITE" strokeType="INSIDE" />
                      </children>
                   </AnchorPane>
             </content>
@@ -64,12 +64,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#leave" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
             <items>
-              <MenuItem id="resetDB" mnemonicParsing="false" text="Reset Stats" />
+              <MenuItem id="resetDB" fx:id="resetDB" mnemonicParsing="false" onAction="#dropDB" text="Reset Stats" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

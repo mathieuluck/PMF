@@ -31,7 +31,7 @@ public class Connect {
     public static Connection getInstance(){
         if(conn == null){
             new Connect();
-            System.out.println("INSTANCIATION DE LA CONNEXION SQL !");
+            System.out.println("Connected");
         }
 
 

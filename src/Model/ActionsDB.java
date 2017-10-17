@@ -1,8 +1,6 @@
 package Model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import Model.Connect;
 
@@ -10,7 +8,7 @@ public class ActionsDB {
 
     public static void main(String[] args) {
 
-        get();
+        resetDB();
     }
 
     public static void insert (float temp, float humidite){
@@ -25,10 +23,43 @@ public class ActionsDB {
 
     }
 
+    public static void resetDB(){
+        try {
+            Statement st = Connect.getInstance().createStatement();
+            st.executeUpdate("DELETE FROM Donnees");
+            System.out.println("Stats reset");
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
 
-    public static ArrayList<String> get(){
+
+    }
+
+
+    public static ArrayList<String> getLastVal(){
         try{
             PreparedStatement st = Connect.getInstance().prepareStatement("SELECT temperature, humidity, time FROM donnees ORDER BY id DESC LIMIT 1");
+            ResultSet result = st.executeQuery();
+
+            ArrayList<String> array = new ArrayList<String>();
+
+            while(result.next()){
+                //System.out.println(result.getString("temperature"));
+                array.add(result.getString("temperature"));
+                array.add(result.getString("humidity"));
+                array.add(result.getString("time"));
+            }
+
+            return array;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static ArrayList<String> getAllVal(){
+        try{
+            PreparedStatement st = Connect.getInstance().prepareStatement("SELECT temperature, humidity, time FROM donnees ORDER BY id");
             ResultSet result = st.executeQuery();
 
             ArrayList<String> array = new ArrayList<String>();
