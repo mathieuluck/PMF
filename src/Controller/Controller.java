@@ -1,5 +1,8 @@
 package Controller;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 
 import javafx.scene.chart.CategoryAxis;
@@ -13,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import Model.ActionsDB;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -45,24 +49,48 @@ public class Controller {
     private LineChart<?, ?> LineChartHum;
 
     @FXML
-    private CategoryAxis xTemp;
+    private CategoryAxis xTemp = new CategoryAxis();
 
     @FXML
-    private NumberAxis yTemp;
+    private NumberAxis yTemp  = new NumberAxis();
 
     @FXML
-    private CategoryAxis xHum;
+    private CategoryAxis xHum = new CategoryAxis();
 
     @FXML
-    private NumberAxis yHum;
+    private NumberAxis yHum  = new NumberAxis();
 
     ArduinoController arduino = new ArduinoController();
 
+    public void initialize() {
+        start();
+        ActionsDB aDB = new ActionsDB();
+        XYChart.Series st = stats();
+
+        XYChart.Series st2 = stats2();
+        st.setName("Température");
+        st2.setName("Taux d'humidité");
+        Timeline tm = new Timeline((new KeyFrame(Duration.seconds(3), event -> {
+
+                    ArrayList<String> stat_array = aDB.getLastVal();
+                    Float temp = Float.parseFloat(stat_array.get(0));
+                    Float hum = Float.parseFloat(stat_array.get(1));
+                    String time = stat_array.get(2);
+                    updateTemp(st, temp, getDate(time));
+                    updateHum(st2, hum, getDate(time));
+
+
+        })));
+        tm.setCycleCount(Animation.INDEFINITE);
+        tm.play();
+        LineChartTemp.getData().addAll(st);
+        LineChartHum.getData().addAll(st2);
+
+    }
 
     public XYChart.Series stats(){
         XYChart.Series series = new XYChart.Series<>();
-
-        return series;
+     return series;
     }
 
     public XYChart.Series stats2(){
@@ -73,7 +101,14 @@ public class Controller {
     public void updateTemp(XYChart.Series series, Float temp, String time){
         try {
             series.getData().add(new XYChart.Data(time, temp));
-            LineChartTemp.getData().add(series);
+
+            xTemp.setAnimated(false);
+            yTemp.setLabel("Degré (°C)");
+            xTemp.setLabel("Temps");
+
+
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -84,7 +119,14 @@ public class Controller {
         try {
             //Float hum = Float.parseFloat(stat_array.get(1));
             series.getData().add(new XYChart.Data(time, hum));
-            LineChartHum.getData().add(series);
+
+            xHum.setAnimated(false);
+            yHum.setLabel("% humidité");
+            xHum.setLabel("Temps");
+
+
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -103,54 +145,33 @@ public class Controller {
 
     public void start(){
 
-        Timer timer = new Timer();
+
         ActionsDB aDB = new ActionsDB();
 
-        XYChart.Series st = stats();
-        XYChart.Series st2 = stats2();
-        TimerTask task = new TimerTask(){
-            @Override
-            public void run(){
-//                int temp = random(1, 30);
-                arduino.initialize();
+//        XYChart.Series st = stats();
+//        XYChart.Series st2 = stats2();
+        Timeline tm = new Timeline((new KeyFrame(Duration.seconds(3), event -> {
+            arduino.initialize();
 
-                //value aléatoire test
-//                float hum2 = (random(1, 30));
-//                float temp2 = (random(1, 30));
-
-//                aDB.insert(temp2, hum2);
-
-                ArrayList<String> stat_array = aDB.getLastVal();
-                Float temp = Float.parseFloat(stat_array.get(0));
-                Float hum = Float.parseFloat(stat_array.get(1));
-                String time = stat_array.get(2);
-                updateTemp(st, temp, getDate(time));
-                updateHum(st2, hum, getDate(time));
-
-//                String time = stat_array.get(2);
-//                series.getData().add(new XYChart.Data(time, hum));
-//                LineChart.getData().addAll(series);
-
-
+            ArrayList<String> stat_array = aDB.getLastVal();
+            Float temp = Float.parseFloat(stat_array.get(0));
+            Float hum = Float.parseFloat(stat_array.get(1));
 
 //                si la température n'est pas null
-                if(temp != null && hum != null){
+            if(temp != null && hum != null){
 
-                    //afficher la température
-                    TextFieldTemp.setText(Float.toString(temp)+ "°C");
-                    TextFieldHumidity.setText(Float.toString(hum)+ "%");
-//                    //stop the timer
-//                    timer.cancel();
-//                    timer.purge();
-//                    javax.swing.JOptionPane.showMessageDialog(null,msg + "  température : " + temp);
-                }
-
+                //afficher la température
+                TextFieldTemp.setText(Float.toString(temp)+ "°C");
+                TextFieldHumidity.setText(Float.toString(hum)+ "%");
             }
-        };
+        })));
+        tm.setCycleCount(Animation.INDEFINITE);
+        tm.play();
 
-        timer.scheduleAtFixedRate(task, 0,3000);
+        }
 
-    }
+
+
 
 
     private int random(int min, int max) {
