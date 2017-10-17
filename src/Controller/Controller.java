@@ -38,13 +38,23 @@ public class Controller {
     public TextField TextFieldHumidity;
 
     @FXML
-    private javafx.scene.chart.LineChart<?, ?> LineChart;
+    private LineChart<?, ?> LineChartTemp;
+
 
     @FXML
-    private CategoryAxis x;
+    private LineChart<?, ?> LineChartHum;
 
     @FXML
-    private NumberAxis y;
+    private CategoryAxis xTemp;
+
+    @FXML
+    private NumberAxis yTemp;
+
+    @FXML
+    private CategoryAxis xHum;
+
+    @FXML
+    private NumberAxis yHum;
 
     ArduinoController arduino = new ArduinoController();
 
@@ -63,7 +73,7 @@ public class Controller {
     public void updateTemp(XYChart.Series series, Float temp, String time){
         try {
             series.getData().add(new XYChart.Data(time, temp));
-            LineChart.getData().add(series);
+            LineChartTemp.getData().add(series);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -74,7 +84,7 @@ public class Controller {
         try {
             //Float hum = Float.parseFloat(stat_array.get(1));
             series.getData().add(new XYChart.Data(time, hum));
-            LineChart.getData().add(series);
+            LineChartHum.getData().add(series);
         }catch (Exception e){
             e.printStackTrace();
         }

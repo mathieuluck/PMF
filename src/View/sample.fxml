@@ -44,14 +44,42 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <LineChart fx:id="LineChart" layoutY="-43.0" onTouchPressed="#stats" prefHeight="343.0" prefWidth="600.0" title="Variation de la Température" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" fx:id="x" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis fx:id="y" side="LEFT" />
-                          </yAxis>
-                        </LineChart>
+                        <TabPane prefHeight="290.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Température">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <LineChart fx:id="LineChartTemp" onTouchPressed="#stats" prefHeight="343.0" prefWidth="600.0" title="Variation de la Température" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" fx:id="xTemp" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis fx:id="yTemp" side="LEFT" />
+                                            </yAxis>
+                                          </LineChart>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="Humidité">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <LineChart fx:id="LineChartHum" onTouchPressed="#stats" prefHeight="261.0" prefWidth="600.0" title="Variation de la Température" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" fx:id="xHum" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis fx:id="yHum" side="LEFT" />
+                                             </yAxis>
+                                          </LineChart>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
                      </children>
                   </AnchorPane>
             </content>
