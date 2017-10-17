@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
    <children>
       <Pane layoutX="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="602.0" />
    </children>
@@ -35,7 +35,7 @@
                         <Label fx:id="LabelHumidity" layoutX="385.0" layoutY="77.0" text="Humidité (%)" />
                         <TextField fx:id="TextFieldDefine" layoutX="155.0" layoutY="194.0" prefHeight="25.0" prefWidth="70.0" />
                         <Label fx:id="LabelDefine" layoutX="14.0" layoutY="199.0" text="Définir température" />
-                        <Circle fill="#8d8d8d" layoutX="506.0" layoutY="210.0" radius="36.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Circle fill="#8d8d8d" layoutX="514.0" layoutY="207.0" radius="36.0" stroke="WHITE" strokeType="INSIDE" />
                      </children>
                   </AnchorPane>
             </content>
@@ -44,12 +44,12 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <LineChart layoutY="-43.0" prefHeight="343.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <LineChart fx:id="LineChart" layoutY="-43.0" onTouchPressed="#stats" prefHeight="343.0" prefWidth="600.0" title="Variation de la Température" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <xAxis>
-                            <CategoryAxis side="BOTTOM" />
+                            <CategoryAxis side="BOTTOM" fx:id="x" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis side="LEFT" />
+                            <NumberAxis fx:id="y" side="LEFT" />
                           </yAxis>
                         </LineChart>
                      </children>

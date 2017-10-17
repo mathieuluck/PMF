@@ -2,6 +2,12 @@ package Controller;
 
 import javafx.fxml.FXML;
 
+import javafx.scene.chart.CategoryAxis;
+
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -31,7 +37,25 @@ public class Controller {
     @FXML
     public TextField TextFieldHumidity;
 
+    @FXML
+    private javafx.scene.chart.LineChart<?, ?> LineChart;
+
+    @FXML
+    private CategoryAxis x;
+
+    @FXML
+    private NumberAxis y;
+
     ArduinoController arduino = new ArduinoController();
+
+
+    public void stats(){
+        XYChart.Series series = new XYChart.Series<>();
+        series.getData().add(new XYChart.Data("1", 23));
+        series.getData().add(new XYChart.Data("2", 40));
+        LineChart.getData().addAll(series);
+
+    }
 
     public void dropDB(){
         ActionsDB aDB = new ActionsDB();
@@ -47,6 +71,7 @@ public class Controller {
         Timer timer = new Timer();
         ActionsDB aDB = new ActionsDB();
 
+stats();
         TimerTask task = new TimerTask(){
             @Override
             public void run(){
