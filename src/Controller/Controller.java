@@ -49,11 +49,35 @@ public class Controller {
     ArduinoController arduino = new ArduinoController();
 
 
-    public void stats(){
+    public XYChart.Series stats(){
         XYChart.Series series = new XYChart.Series<>();
-        series.getData().add(new XYChart.Data("1", 23));
-        series.getData().add(new XYChart.Data("2", 40));
-        LineChart.getData().addAll(series);
+
+        return series;
+    }
+
+    public XYChart.Series stats2(){
+        XYChart.Series series = new XYChart.Series<>();
+        return series;
+    }
+
+    public void updateTemp(XYChart.Series series, Float temp, String time){
+        try {
+            series.getData().add(new XYChart.Data(time, temp));
+            LineChart.getData().add(series);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateHum(XYChart.Series series, Float hum, String time){
+        try {
+            //Float hum = Float.parseFloat(stat_array.get(1));
+            series.getData().add(new XYChart.Data(time, hum));
+            LineChart.getData().add(series);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -68,10 +92,12 @@ public class Controller {
     }
 
     public void start(){
+
         Timer timer = new Timer();
         ActionsDB aDB = new ActionsDB();
 
-stats();
+        XYChart.Series st = stats();
+        XYChart.Series st2 = stats2();
         TimerTask task = new TimerTask(){
             @Override
             public void run(){
@@ -87,6 +113,13 @@ stats();
                 ArrayList<String> stat_array = aDB.getLastVal();
                 Float temp = Float.parseFloat(stat_array.get(0));
                 Float hum = Float.parseFloat(stat_array.get(1));
+                String time = stat_array.get(2);
+                updateTemp(st, temp, getDate(time));
+                updateHum(st2, hum, getDate(time));
+
+//                String time = stat_array.get(2);
+//                series.getData().add(new XYChart.Data(time, hum));
+//                LineChart.getData().addAll(series);
 
 
 
@@ -115,6 +148,12 @@ stats();
         int randomInt = rand.nextInt((max - min ) + 1 ) + min;
 
         return randomInt;
+    }
+
+    private String getDate(String date){
+        date = date.substring(11,date.length());
+        date = date.substring(0,date.length()-2);
+        return date;
     }
 
 }
