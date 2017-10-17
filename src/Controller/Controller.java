@@ -19,13 +19,13 @@ public class Controller {
     public Button monBouton;
 
     @FXML
-    public Label monLabel;
+    public Label LabelTemp;
 
     @FXML
-    public TextField monTextField;
+    public TextField TextFieldTemp;
 
     @FXML
-    public TextField monTextField2;
+    public TextField TextFieldHumidity;
 
     ArduinoController arduino = new ArduinoController();
 
@@ -60,8 +60,8 @@ public class Controller {
                 if(temp != null && hum != null){
 
                     //afficher la température
-                    monTextField.setText(Float.toString(temp)+ "°C");
-                    monTextField2.setText(Float.toString(hum)+ "%");
+                    TextFieldTemp.setText(Float.toString(temp)+ "°C");
+                    TextFieldHumidity.setText(Float.toString(hum)+ "%");
 //                    //stop the timer
 //                    timer.cancel();
 //                    timer.purge();
