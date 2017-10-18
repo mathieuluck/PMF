@@ -30,12 +30,14 @@
                         <Button layoutX="155.0" layoutY="237.0" mnemonicParsing="false" onAction="#start" prefHeight="25.0" prefWidth="70.0" text="Valider" />
                         <TextField fx:id="TextFieldTemp" editable="false" layoutX="155.0" layoutY="72.0" prefHeight="25.0" prefWidth="70.0" />
                         <TextField fx:id="TextFieldHumidity" editable="false" layoutX="479.0" layoutY="72.0" prefHeight="25.0" prefWidth="70.0" />
-                        <Label fx:id="LabelTemp" layoutX="14.0" layoutY="77.0" text="Température (°C)" />
+                        <Label fx:id="LabelTemp" layoutX="14.0" layoutY="77.0" text="Température IN (°C)" />
                         <Button layoutX="372.0" layoutY="268.0" mnemonicParsing="false" onAction="#leave" text="shutdawn" visible="false" />
                         <Label fx:id="LabelHumidity" layoutX="385.0" layoutY="77.0" text="Humidité (%)" />
                         <TextField fx:id="TextFieldDefine" layoutX="155.0" layoutY="194.0" prefHeight="25.0" prefWidth="70.0" />
                         <Label fx:id="LabelDefine" layoutX="14.0" layoutY="199.0" text="Définir température" />
-                        <Circle fill="#8d8d8d" layoutX="514.0" layoutY="207.0" radius="36.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Circle fx:id="bouboule" layoutX="514.0" layoutY="207.0" radius="36.0" stroke="WHITE" strokeType="INSIDE" />
+                        <TextField fx:id="TextFieldTempOut" editable="false" layoutX="155.0" layoutY="111.0" prefHeight="25.0" prefWidth="70.0" />
+                        <Label fx:id="LabelTempOut" layoutX="14.0" layoutY="116.0" text="Température OUT (°C)" />
                      </children>
                   </AnchorPane>
             </content>
@@ -102,7 +104,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="menutest" mnemonicParsing="false" text="About" />
             </items>
           </Menu>
         </menus>

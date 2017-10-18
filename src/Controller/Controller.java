@@ -5,6 +5,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 
+import javafx.scene.paint.Color;
+
 import javafx.scene.chart.CategoryAxis;
 
 import javafx.scene.chart.LineChart;
@@ -16,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import Model.ActionsDB;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -25,6 +28,12 @@ import java.util.TimerTask;
 import java.util.Random;
 
 public class Controller {
+
+    @FXML
+    private Circle bouboule;
+
+    @FXML
+    public MenuItem menutest;
 
     @FXML
     public MenuItem resetDB;
@@ -39,7 +48,16 @@ public class Controller {
     public TextField TextFieldTemp;
 
     @FXML
+    public Label LabelTempOut;
+
+    @FXML
+    public TextField TextFieldTemOut;
+
+    @FXML
     public TextField TextFieldHumidity;
+
+    @FXML
+    public TextField TextFieldDefine;
 
     @FXML
     private LineChart<?, ?> LineChartTemp;
@@ -63,6 +81,7 @@ public class Controller {
     ArduinoController arduino = new ArduinoController();
 
     public void initialize() {
+
         start();
         ActionsDB aDB = new ActionsDB();
         XYChart.Series st = stats();
@@ -78,7 +97,7 @@ public class Controller {
                     String time = stat_array.get(2);
                     updateTemp(st, temp, getDate(time));
                     updateHum(st2, hum, getDate(time));
-
+                    AlertMsg();
 
         })));
         tm.setCycleCount(Animation.INDEFINITE);
@@ -171,7 +190,34 @@ public class Controller {
         }
 
 
+    public void AlertMsg() {       // Fonction pour toutes les alertes possibles et imagineables.
+        ActionsDB aDB = new ActionsDB();
+        ArrayList<String> stat_array = aDB.getLastVal();
+        Float temp = Float.parseFloat(stat_array.get(0));
+        Float hum = Float.parseFloat(stat_array.get(1));
 
+        if (Integer.parseInt(TextFieldDefine.getText()) <= Integer.parseInt(Float.toString(temp))) {
+            bouboule.setFill(Color.RED);
+        }
+     //   else if (Integer.parseInt(Float.toString(temp)) -= 5 <= Integer.parseInt(TextFieldDefine.getText()) &&  Integer.parseInt(Float.toString(temp)) += 5+ Integer.parseInt(TextFieldDefine.getText()))
+       // {
+
+        //}
+        else if (Integer.parseInt(TextFieldDefine.getText()) >= Integer.parseInt(Float.toString(temp))) {
+            bouboule.setFill(Color.RED);
+        }
+
+        if (temp <= 6 && hum >= 50) //AlerteCondensation
+        {
+
+            String info = "OLALA! Condensation arrive!!! \n" + Float.toString(temp) + " et " + Float.toString(hum);
+            javax.swing.JOptionPane.showMessageDialog(null, info);
+
+        } else if (TextFieldDefine.getText() != Float.toString(temp)) {
+            String info = "Température de consigne et mesurée trop différente. \n Vérifiez que rien n'obstrue le module de refroidissement ou que la porte du frigo est bien fermée.";
+            javax.swing.JOptionPane.showMessageDialog(null, info);
+        }
+    }
 
 
     private int random(int min, int max) {
