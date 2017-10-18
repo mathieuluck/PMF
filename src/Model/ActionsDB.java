@@ -11,9 +11,9 @@ public class ActionsDB {
         resetDB();
     }
 
-    public static void insert (float temp, float humidite){
+    public static void insert (float temp, float humidite, float temp_out, float hum_out){
         try{
-            PreparedStatement posted = Connect.getInstance().prepareStatement("INSERT INTO donnees (temperature, humidity, time) VALUES ('"+temp+"', '"+humidite+"',now())");
+            PreparedStatement posted = Connect.getInstance().prepareStatement("INSERT INTO donnees (temperature, humidity, time, tempout, humout) VALUES ('"+temp+"', '"+humidite+"',now(), '"+temp_out+"','"+hum_out+"')");
             //System.out.println(posted);
             posted.executeUpdate();
         }
@@ -38,7 +38,7 @@ public class ActionsDB {
 
     public static ArrayList<String> getLastVal(){
         try{
-            PreparedStatement st = Connect.getInstance().prepareStatement("SELECT temperature, humidity, time FROM donnees ORDER BY id DESC LIMIT 1");
+            PreparedStatement st = Connect.getInstance().prepareStatement("SELECT temperature, humidity, time, tempout, humout FROM donnees ORDER BY id DESC LIMIT 1");
             ResultSet result = st.executeQuery();
 
             ArrayList<String> array = new ArrayList<String>();
@@ -48,6 +48,8 @@ public class ActionsDB {
                 array.add(result.getString("temperature"));
                 array.add(result.getString("humidity"));
                 array.add(result.getString("time"));
+                array.add(result.getString("tempout"));
+                array.add(result.getString("humout"));
             }
 
             return array;

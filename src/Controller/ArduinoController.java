@@ -123,18 +123,27 @@ public class ArduinoController implements SerialPortEventListener {
                 ActionsDB aDB = new ActionsDB();
 
                 String inputLine=input.readLine();
+//                System.out.println(inputLine);
                 String[] parts = inputLine.split("\t");
+
+
 
                 String humidity = parts[0];
                 String temperature = parts[1];
+                String humidityout = parts[2];
+                String temperatureout = parts[3];
 
                 float hum = Float.parseFloat(humidity);
                 float temp = Float.parseFloat(temperature);
+                float humout = Float.parseFloat(humidityout);
+                float tempout = Float.parseFloat(temperatureout);
+
+
 
 //                float hum = (random(1, 30));
 //                float temp = (random(1, 30));
 
-                aDB.insert(temp, hum);
+                aDB.insert(temp, hum, tempout,humout);
 //                System.out.println("Humidité mesuré: " + humidity);
 //                System.out.println("Température mesuré: " + temperature);
 

@@ -51,7 +51,7 @@ public class Controller {
     public Label LabelTempOut;
 
     @FXML
-    public TextField TextFieldTemOut;
+    public TextField TextFieldTempOut;
 
     @FXML
     public TextField TextFieldHumidity;
@@ -97,7 +97,7 @@ public class Controller {
                     String time = stat_array.get(2);
                     updateTemp(st, temp, getDate(time));
                     updateHum(st2, hum, getDate(time));
-                    AlertMsg();
+//                    sAlertMsg();
 
         })));
         tm.setCycleCount(Animation.INDEFINITE);
@@ -173,14 +173,18 @@ public class Controller {
             arduino.initialize();
 
             ArrayList<String> stat_array = aDB.getLastVal();
+            System.out.println(stat_array);
             Float temp = Float.parseFloat(stat_array.get(0));
             Float hum = Float.parseFloat(stat_array.get(1));
+            Float tempout = Float.parseFloat(stat_array.get(3));
+            //Float humout = Float.parseFloat(stat_array.get(4));
 
 //                si la température n'est pas null
             if(temp != null && hum != null){
 
                 //afficher la température
                 TextFieldTemp.setText(Float.toString(temp)+ "°C");
+                TextFieldTempOut.setText(Float.toString(tempout)+ "°C");
                 TextFieldHumidity.setText(Float.toString(hum)+ "%");
             }
         })));
@@ -189,35 +193,35 @@ public class Controller {
 
         }
 
-
-    public void AlertMsg() {       // Fonction pour toutes les alertes possibles et imagineables.
-        ActionsDB aDB = new ActionsDB();
-        ArrayList<String> stat_array = aDB.getLastVal();
-        Float temp = Float.parseFloat(stat_array.get(0));
-        Float hum = Float.parseFloat(stat_array.get(1));
-
-        if (Integer.parseInt(TextFieldDefine.getText()) <= Integer.parseInt(Float.toString(temp))) {
-            bouboule.setFill(Color.RED);
-        }
-     //   else if (Integer.parseInt(Float.toString(temp)) -= 5 <= Integer.parseInt(TextFieldDefine.getText()) &&  Integer.parseInt(Float.toString(temp)) += 5+ Integer.parseInt(TextFieldDefine.getText()))
-       // {
-
-        //}
-        else if (Integer.parseInt(TextFieldDefine.getText()) >= Integer.parseInt(Float.toString(temp))) {
-            bouboule.setFill(Color.RED);
-        }
-
-        if (temp <= 6 && hum >= 50) //AlerteCondensation
-        {
-
-            String info = "OLALA! Condensation arrive!!! \n" + Float.toString(temp) + " et " + Float.toString(hum);
-            javax.swing.JOptionPane.showMessageDialog(null, info);
-
-        } else if (TextFieldDefine.getText() != Float.toString(temp)) {
-            String info = "Température de consigne et mesurée trop différente. \n Vérifiez que rien n'obstrue le module de refroidissement ou que la porte du frigo est bien fermée.";
-            javax.swing.JOptionPane.showMessageDialog(null, info);
-        }
-    }
+//
+//    public void AlertMsg() {       // Fonction pour toutes les alertes possibles et imagineables.
+//        ActionsDB aDB = new ActionsDB();
+//        ArrayList<String> stat_array = aDB.getLastVal();
+//        Float temp = Float.parseFloat(stat_array.get(0));
+//        Float hum = Float.parseFloat(stat_array.get(1));
+//
+//        if (Integer.parseInt(TextFieldDefine.getText()) <= Integer.parseInt(Float.toString(temp))) {
+//            bouboule.setFill(Color.RED);
+//        }
+//     //   else if (Integer.parseInt(Float.toString(temp)) -= 5 <= Integer.parseInt(TextFieldDefine.getText()) &&  Integer.parseInt(Float.toString(temp)) += 5+ Integer.parseInt(TextFieldDefine.getText()))
+//       // {
+//
+//        //}
+//        else if (Integer.parseInt(TextFieldDefine.getText()) >= Integer.parseInt(Float.toString(temp))) {
+//            bouboule.setFill(Color.RED);
+//        }
+//
+//        if (temp <= 6 && hum >= 50) //AlerteCondensation
+//        {
+//
+//            String info = "OLALA! Condensation arrive!!! \n" + Float.toString(temp) + " et " + Float.toString(hum);
+//            javax.swing.JOptionPane.showMessageDialog(null, info);
+//
+//        } else if (TextFieldDefine.getText() != Float.toString(temp)) {
+//            String info = "Température de consigne et mesurée trop différente. \n Vérifiez que rien n'obstrue le module de refroidissement ou que la porte du frigo est bien fermée.";
+//            javax.swing.JOptionPane.showMessageDialog(null, info);
+//        }
+//    }
 
 
     private int random(int min, int max) {
