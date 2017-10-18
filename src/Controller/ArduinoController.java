@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
@@ -112,6 +113,17 @@ public class ArduinoController implements SerialPortEventListener {
             serialPort.removeEventListener();
             serialPort.close();
         }
+    }
+
+    public synchronized void send(int consigne) {
+
+        System.out.println(consigne);
+        /*try {
+            output.write(consigne);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
     }
 
     /**

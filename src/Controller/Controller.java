@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Connect;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -27,7 +28,7 @@ import java.util.TimerTask;
 
 import java.util.Random;
 
-public class Controller {
+public class Controller extends ArduinoController {
 
     @FXML
     private Circle bouboule;
@@ -89,11 +90,13 @@ public class Controller {
         XYChart.Series st2 = stats2();
 
         XYChart.Series st3 = stats3();
-        st.setName("Température");
+        st.setName("Température IN");
         st2.setName("Taux d'humidité");
+        st3.setName("Température OUT");
         Timeline tm = new Timeline((new KeyFrame(Duration.seconds(3), event -> {
 
                     ArrayList<String> stat_array = aDB.getLastVal();
+
                     Float temp = Float.parseFloat(stat_array.get(0));
                     Float tempout = Float.parseFloat(stat_array.get(3));
                     Float hum = Float.parseFloat(stat_array.get(1));
@@ -124,6 +127,12 @@ public class Controller {
     public XYChart.Series stats3(){
         XYChart.Series series = new XYChart.Series<>();
         return series;
+    }
+
+    public void recupConsigne(){
+        int consigne = Integer.parseInt(TextFieldDefine.getText());
+
+        send(consigne);
     }
 
     public void updateTemp(XYChart.Series series, Float temp,  String time){
