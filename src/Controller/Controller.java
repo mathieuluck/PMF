@@ -87,15 +87,19 @@ public class Controller {
         XYChart.Series st = stats();
 
         XYChart.Series st2 = stats2();
+
+        XYChart.Series st3 = stats3();
         st.setName("Température");
         st2.setName("Taux d'humidité");
         Timeline tm = new Timeline((new KeyFrame(Duration.seconds(3), event -> {
 
                     ArrayList<String> stat_array = aDB.getLastVal();
                     Float temp = Float.parseFloat(stat_array.get(0));
+                    Float tempout = Float.parseFloat(stat_array.get(3));
                     Float hum = Float.parseFloat(stat_array.get(1));
                     String time = stat_array.get(2);
                     updateTemp(st, temp, getDate(time));
+                    updateTempOut(st3, tempout, getDate(time));
                     updateHum(st2, hum, getDate(time));
 //                    sAlertMsg();
 
@@ -104,7 +108,7 @@ public class Controller {
         tm.play();
         LineChartTemp.getData().addAll(st);
         LineChartHum.getData().addAll(st2);
-
+        LineChartTemp.getData().addAll(st3);
     }
 
     public XYChart.Series stats(){
@@ -117,13 +121,31 @@ public class Controller {
         return series;
     }
 
-    public void updateTemp(XYChart.Series series, Float temp, String time){
+    public XYChart.Series stats3(){
+        XYChart.Series series = new XYChart.Series<>();
+        return series;
+    }
+
+    public void updateTemp(XYChart.Series series, Float temp,  String time){
         try {
             series.getData().add(new XYChart.Data(time, temp));
 
             xTemp.setAnimated(false);
             yTemp.setLabel("Degré (°C)");
             xTemp.setLabel("Temps");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void updateTempOut(XYChart.Series series,  Float tempout, String time){
+        try {
+
+            series.getData().add(new XYChart.Data(time, tempout));
 
 
 
@@ -133,6 +155,8 @@ public class Controller {
         }
 
     }
+
+
 
     public void updateHum(XYChart.Series series, Float hum, String time){
         try {
