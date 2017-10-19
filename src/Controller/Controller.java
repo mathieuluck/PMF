@@ -45,6 +45,8 @@ public class Controller extends ArduinoController {
     @FXML
     public TextField TextFieldTempOut;
     @FXML
+    public TextField TextFieldTempRose;
+    @FXML
     public TextField TextFieldHumidity;
     @FXML
     public TextField TextFieldDefine;
@@ -213,6 +215,7 @@ public class Controller extends ArduinoController {
                 TextFieldTemp.setText(Float.toString(temp)+ "°C");
                 TextFieldTempOut.setText(Float.toString(tempout)+ "°C");
                 TextFieldHumidity.setText(Float.toString(hum)+ "%");
+
             }
         })));
         tm.setCycleCount(Animation.INDEFINITE);
@@ -254,8 +257,7 @@ public class Controller extends ArduinoController {
 
         TempRose = (237.7 * k)/(17.27 - k);
 
-        System.out.println(k);
-        System.out.println(TempRose);
+        TextFieldTempRose.setText(Double.toString(TempRose)+ "°C");
 
         if(temp < TempRose)
         {
