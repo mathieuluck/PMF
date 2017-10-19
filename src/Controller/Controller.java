@@ -93,8 +93,8 @@ public class Controller extends ArduinoController {
             System.out.println(TextFieldDefine.getText());
             if(TextFieldDefine.getText().length() >=1 && TextFieldDefine.getText().length() <=2) {
                 test = boule(temp, test);
-                condensation(temp, tempout, hum);
             }
+            condensation(temp, tempout, hum);
         })));
         tm.setCycleCount(Animation.INDEFINITE);
         tm.play();
@@ -257,29 +257,13 @@ public class Controller extends ArduinoController {
 
         TempRose = (237.7 * k)/(17.27 - k);
 
-        TextFieldTempRose.setText(Double.toString(TempRose)+ "°C");
+        TextFieldTempRose.setText(Double.toString(TempRose).substring(0,4)+ "°C");
 
         if(temp < TempRose)
         {
             String info = "Attention risque de condensation, température interne inférieure au point de rosée";
             javax.swing.JOptionPane.showMessageDialog(null, info);
         }
-
-
-
-
-
-//        if (temp <= 6 && hum >= 50) //AlerteCondensation
-//        {
-//
-//            String info = "OLALA! Condensation arrive!!! \n" + Float.toString(temp) + " et " + Float.toString(hum);
-//            javax.swing.JOptionPane.showMessageDialog(null, info);
-//
-//        } else if (TextFieldDefine.getText() != Float.toString(temp)) {
-//            String info = "Température de consigne et mesurée trop différente. \n Vérifiez que rien n'obstrue le module de refroidissement ou que la porte du frigo est bien fermée.";
-//            javax.swing.JOptionPane.showMessageDialog(null, info);
-//        }
-
     }
 
     private String getDate(String date){
