@@ -22,11 +22,14 @@ import Model.ActionsDB;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller extends ArduinoController {
 
@@ -79,7 +82,8 @@ public class Controller extends ArduinoController {
     @FXML
     private NumberAxis yHum  = new NumberAxis();
 
-    ArduinoController arduino = new ArduinoController();
+    private ArduinoController arduino = new ArduinoController();
+
 
     public void initialize() {
 
@@ -131,8 +135,13 @@ public class Controller extends ArduinoController {
 
     public void recupConsigne(){
         int consigne = Integer.parseInt(TextFieldDefine.getText());
-
-        send(consigne);
+        try {
+            myRxTx.output.write(consigne);
+        } catch (IOException ex) {
+            Logger.getLogger(
+                    ArduinoController.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }
 
     public void updateTemp(XYChart.Series series, Float temp,  String time){
@@ -203,7 +212,8 @@ public class Controller extends ArduinoController {
 //        XYChart.Series st = stats();
 //        XYChart.Series st2 = stats2();
         Timeline tm = new Timeline((new KeyFrame(Duration.seconds(3), event -> {
-            arduino.initialize();
+            //arduino.initialize();
+
 
             ArrayList<String> stat_array = aDB.getLastVal();
             System.out.println(stat_array);
