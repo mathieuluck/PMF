@@ -11,10 +11,10 @@ public class ActionsDB {
         resetDB();
     }
 
-    public static void insert (float temp, float humidite, float temp_out, float hum_out){
+    public static void insert (float temp, float humidite, float temp_out){
         try{
-            PreparedStatement posted = Connect.getInstance().prepareStatement("INSERT INTO donnees (temperature, humidity, time, tempout, humout) VALUES ('"+temp+"', '"+humidite+"',now(), '"+temp_out+"','"+hum_out+"')");
-            //System.out.println(posted);
+            PreparedStatement posted = Connect.getInstance().prepareStatement("INSERT INTO donnees (temperature, humidity, time, tempout) VALUES ('"+temp+"', '"+humidite+"',now(), '"+temp_out+"')");
+            System.out.println(posted);
             posted.executeUpdate();
         }
         catch (Exception e){

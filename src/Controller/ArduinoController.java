@@ -1,5 +1,6 @@
 package Controller;
 import Model.ActionsDB;
+import Model.Model;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -11,12 +12,13 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class ArduinoController extends Application {
 
     MyRxTx myRxTx;
-    Label textInfo, textIn;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -37,6 +39,8 @@ public class ArduinoController extends Application {
         public OutputStream output;
         private static final int TIME_OUT = 2000;
         private static final int DATA_RATE = 9600;
+
+        private Model data = new Model();
 
         public void initialize() {
             CommPortIdentifier portId = null;
@@ -86,26 +90,22 @@ public class ArduinoController extends Application {
         public void serialEvent(SerialPortEvent spe) {
             if (spe.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                 try {
-                    ActionsDB aDB = new ActionsDB();
 
                     String inputLine=input.readLine();
                     String[] parts = inputLine.split("\t");
 
-
-
                     String humidity = parts[0];
                     String temperature = parts[1];
-                    String humidityout = parts[2];
                     String temperatureout = parts[3];
 
                     float hum = Float.parseFloat(humidity);
                     float temp = Float.parseFloat(temperature);
-                    float humout = Float.parseFloat(humidityout);
                     float tempout = Float.parseFloat(temperatureout);
 
-                    aDB.insert(temp, hum, tempout,humout);
+                    data.setAll(temp,hum,tempout);
 
-                    System.out.println(inputLine);
+
+                    System.out.println(temp);
                 } catch (Exception e) {
                     System.err.println(e.toString());
                 }

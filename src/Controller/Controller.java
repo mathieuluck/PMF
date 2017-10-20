@@ -1,13 +1,12 @@
 package Controller;
 
-import Model.Connect;
+import Model.Model;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
-import javafx.scene.paint.Color;
 
 import javafx.scene.chart.CategoryAxis;
 
@@ -16,15 +15,13 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
 import Model.ActionsDB;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,8 +31,6 @@ public class Controller extends ArduinoController {
     public MenuItem menutest;
     @FXML
     public MenuItem resetDB;
-    @FXML
-    public MenuItem closebtn;
     @FXML
     public Label LabelTemp;
     @FXML
@@ -50,9 +45,11 @@ public class Controller extends ArduinoController {
     public TextField TextFieldHumidity;
     @FXML
     public TextField TextFieldDefine;
-    boolean test = true;
+
+    private boolean test = true;
+
     @FXML
-    private Circle bouboule;
+    public Circle bouboule;
     @FXML
     private LineChart<?, ?> LineChartTemp;
     @FXML
@@ -65,36 +62,45 @@ public class Controller extends ArduinoController {
     private CategoryAxis xHum = new CategoryAxis();
     @FXML
     private NumberAxis yHum  = new NumberAxis();
+
     private ArduinoController.MyRxTx arduino = new ArduinoController.MyRxTx();
+
 
     public void initialize() {
 
-        start();
-        ActionsDB aDB = new ActionsDB();
+        arduino.initialize();
         XYChart.Series st = stats();
 
-        XYChart.Series st2 = stats2();
+        XYChart.Series st2 = stats();
 
-        XYChart.Series st3 = stats3();
+        XYChart.Series st3 = stats();
         st.setName("Température IN");
         st2.setName("Taux d'humidité");
         st3.setName("Température OUT");
         Timeline tm = new Timeline((new KeyFrame(Duration.seconds(3), event -> {
 
-            ArrayList<String> stat_array = aDB.getLastVal();
+            Model data = new Model();
+            Float hum = data.getHum();
+            Float temp = data.getTempIn();
+            Float tempout = data.getTempOut();
+            String time = data.getDate();
 
-            Float temp = Float.parseFloat(stat_array.get(0));
-            Float tempout = Float.parseFloat(stat_array.get(3));
-            Float hum = Float.parseFloat(stat_array.get(1));
-            String time = stat_array.get(2);
-            updateTemp(st, temp, getDate(time));
-            updateTempOut(st3, tempout, getDate(time));
-            updateHum(st2, hum, getDate(time));
-            System.out.println(TextFieldDefine.getText());
-            if(TextFieldDefine.getText().length() >=1 && TextFieldDefine.getText().length() <=2) {
-                test = boule(temp, test);
+            //                si la température n'est pas null
+            if(temp != null && hum != null) {
+
+                //afficher la température
+                TextFieldTemp.setText(Float.toString(temp) + "°C");
+                TextFieldTempOut.setText(Float.toString(tempout) + "°C");
+                TextFieldHumidity.setText(Float.toString(hum) + "%");
             }
             condensation(temp, tempout, hum);
+            updateGraph(st, temp, formatDate(time));
+            updateGraph(st3, tempout, formatDate(time));
+            updateGraph(st2, hum, formatDate(time));
+            System.out.println(TextFieldDefine.getText());
+            if(TextFieldDefine.getText().length() >=1 && TextFieldDefine.getText().length() <=2) {
+                test =boule(temp, test);
+            }
         })));
         tm.setCycleCount(Animation.INDEFINITE);
         tm.play();
@@ -104,16 +110,6 @@ public class Controller extends ArduinoController {
     }
 
     public XYChart.Series stats(){
-        XYChart.Series series = new XYChart.Series<>();
-        return series;
-    }
-
-    public XYChart.Series stats2(){
-        XYChart.Series series = new XYChart.Series<>();
-        return series;
-    }
-
-    public XYChart.Series stats3(){
         XYChart.Series series = new XYChart.Series<>();
         return series;
     }
@@ -146,33 +142,12 @@ public class Controller extends ArduinoController {
         }
     }
 
-    public void updateTemp(XYChart.Series series, Float temp,  String time){
+    public void updateGraph(XYChart.Series series, Float value,  String time){
         try {
-            series.getData().add(new XYChart.Data(time, temp));
+            series.getData().add(new XYChart.Data(time, value));
             xTemp.setAnimated(false);
             yTemp.setLabel("Degré (°C)");
             xTemp.setLabel("Temps");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public void updateTempOut(XYChart.Series series,  Float tempout, String time){
-        try {
-            series.getData().add(new XYChart.Data(time, tempout));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-
-    public void updateHum(XYChart.Series series, Float hum, String time){
-        try {
-            series.getData().add(new XYChart.Data(time, hum));
-
             xHum.setAnimated(false);
             yHum.setLabel("% humidité");
             xHum.setLabel("Temps");
@@ -180,7 +155,6 @@ public class Controller extends ArduinoController {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     public void dropDB(){
@@ -191,35 +165,6 @@ public class Controller extends ArduinoController {
     //exit
     public void leave(){
         System.exit(0);
-    }
-
-    public void start(){
-        ActionsDB aDB = new ActionsDB();
-
-        Timeline tm = new Timeline((new KeyFrame(Duration.seconds(3), event -> {
-            arduino.initialize();
-
-            ArrayList<String> stat_array = aDB.getLastVal();
-            System.out.println(stat_array);
-            Float temp = Float.parseFloat(stat_array.get(0));
-            Float hum = Float.parseFloat(stat_array.get(1));
-            Float tempout = Float.parseFloat(stat_array.get(3));
-
-
-
-
-//                si la température n'est pas null
-            if(temp != null && hum != null){
-
-                //afficher la température
-                TextFieldTemp.setText(Float.toString(temp)+ "°C");
-                TextFieldTempOut.setText(Float.toString(tempout)+ "°C");
-                TextFieldHumidity.setText(Float.toString(hum)+ "%");
-
-            }
-        })));
-        tm.setCycleCount(Animation.INDEFINITE);
-        tm.play();
     }
 
     public boolean boule(Float temp, Boolean test) {       // Fonction pour toutes les alertes possibles et imagineables.
@@ -249,9 +194,9 @@ public class Controller extends ArduinoController {
         return test;
     }
 
+
     public void condensation(float temp, float tempout, float hum)
     {
-
         double TempRose;
         double k = (17.27 * tempout)/(237.7 + tempout) + Math.log(hum/100);
 
@@ -266,7 +211,7 @@ public class Controller extends ArduinoController {
         }
     }
 
-    private String getDate(String date){
+    private String formatDate(String date){
         date = date.substring(11,date.length());
         date = date.substring(0,date.length()-2);
         return date;
